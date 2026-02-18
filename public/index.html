@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,20 +11,24 @@
   <script src="/socket.io/socket.io.js"></script>
   <style>
     :root {
-      --bg-primary:    #0b0f19;
-      --bg-secondary:  #111827;
-      --bg-card:       #1a2233;
-      --bg-input:      #1e293b;
-      --accent:        #6366f1;
-      --accent-hover:  #818cf8;
-      --text-primary:  #f1f5f9;
-      --text-muted:    #94a3b8;
-      --border:        #1e293b;
-      --success:       #22c55e;
-      --danger:        #ef4444;
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: #1a2233;
+      --bg-input: #1e293b;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --text-primary: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --success: #22c55e;
+      --danger: #ef4444;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
@@ -31,6 +36,8 @@
       color: var(--text-primary);
       overflow: hidden;
       height: 100vh;
+      height: 100dvh;
+      /* Fix for mobile address bars */
     }
 
     /* ── Gatekeeper Screen ─────────────────────────── */
@@ -39,194 +46,22 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      height: 100dvh;
       background: radial-gradient(ellipse at 50% 30%, #1e1b4b 0%, #0b0f19 70%);
     }
 
-    .gate-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 1.25rem;
-      padding: 3rem 2.5rem;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 80px rgba(99,102,241,.08);
-      animation: fadeUp .6s ease-out;
-    }
-
-    .gate-card h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: .35rem;
-      background: linear-gradient(135deg, #6366f1, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .gate-card p { color: var(--text-muted); margin-bottom: 1.75rem; font-size: .9rem; }
-
-    .gate-input {
-      width: 100%;
-      padding: .85rem 1rem;
-      border-radius: .75rem;
-      border: 1px solid var(--border);
-      background: var(--bg-input);
-      color: var(--text-primary);
-      font-size: 1rem;
-      outline: none;
-      transition: border-color .2s;
-      margin-bottom: .75rem;
-    }
-    .gate-input:focus { border-color: var(--accent); }
-
-    .gate-btn {
-      width: 100%;
-      padding: .85rem;
-      border: none;
-      border-radius: .75rem;
-      background: linear-gradient(135deg, #6366f1, #7c3aed);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform .15s, box-shadow .2s;
-    }
-    .gate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(99,102,241,.35); }
-    .gate-btn:active { transform: scale(.98); }
-
-    .gate-error {
-      color: var(--danger);
-      font-size: .82rem;
-      margin-top: .6rem;
-      min-height: 1.2rem;
-    }
+    /* ... */
 
     /* ── Chat Screen ───────────────────────────────── */
     #chat-screen {
       display: none;
       flex-direction: column;
       height: 100vh;
+      height: 100dvh;
+      /* Fix for mobile address bars */
     }
 
-    /* Header */
-    .chat-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .85rem 1.25rem;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .chat-header-left { display: flex; align-items: center; gap: .65rem; }
-
-    .vault-icon {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1, #7c3aed);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-    }
-
-    .header-title { font-weight: 700; font-size: 1.05rem; }
-    .header-subtitle { font-size: .72rem; color: var(--text-muted); }
-
-    .online-badge {
-      display: flex; align-items: center; gap: .35rem;
-      font-size: .78rem; color: var(--success);
-    }
-    .online-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--success);
-      animation: pulse 2s infinite;
-    }
-
-    /* Messages area */
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem 1rem .5rem;
-      display: flex;
-      flex-direction: column;
-      gap: .35rem;
-      background: var(--bg-primary);
-      scroll-behavior: smooth;
-    }
-
-    .chat-messages::-webkit-scrollbar { width: 5px; }
-    .chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .chat-messages::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-    /* Message bubbles */
-    .msg-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: .25rem; }
-
-    .msg-sender {
-      font-size: .72rem;
-      font-weight: 600;
-      margin-bottom: 2px;
-      padding-left: 2px;
-    }
-
-    .msg-bubble {
-      max-width: 75%;
-      padding: .6rem .9rem;
-      border-radius: 1rem;
-      font-size: .92rem;
-      line-height: 1.45;
-      word-wrap: break-word;
-      position: relative;
-    }
-
-    .msg-other .msg-bubble {
-      background: var(--bg-card);
-      border-top-left-radius: .25rem;
-      align-self: flex-start;
-    }
-
-    .msg-self {
-      align-items: flex-end;
-    }
-    .msg-self .msg-bubble {
-      background: linear-gradient(135deg, #4f46e5, #6d28d9);
-      border-top-right-radius: .25rem;
-      color: #fff;
-    }
-    .msg-self .msg-sender { text-align: right; padding-right: 2px; }
-
-    .msg-time {
-      font-size: .62rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-      padding: 0 4px;
-    }
-    .msg-self .msg-time { text-align: right; color: rgba(255,255,255,.5); }
-
-    /* System messages */
-    .msg-system {
-      text-align: center;
-      font-size: .75rem;
-      color: var(--text-muted);
-      padding: .45rem 0;
-      font-style: italic;
-    }
-
-    /* Typing indicator */
-    .typing-indicator {
-      font-size: .78rem;
-      color: var(--text-muted);
-      padding: .25rem 1rem;
-      min-height: 1.6rem;
-      flex-shrink: 0;
-    }
-    .typing-dots { display: inline-flex; gap: 3px; margin-left: 4px; vertical-align: middle; }
-    .typing-dots span {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--text-muted);
-      animation: bounce .6s infinite alternate;
-    }
-    .typing-dots span:nth-child(2) { animation-delay: .15s; }
-    .typing-dots span:nth-child(3) { animation-delay: .3s; }
+    /* ... */
 
     /* Input bar */
     .chat-input-bar {
@@ -234,6 +69,8 @@
       align-items: center;
       gap: .6rem;
       padding: .75rem 1rem;
+      padding-bottom: max(.75rem, env(safe-area-inset-bottom));
+      /* iPhone fix */
       background: var(--bg-secondary);
       border-top: 1px solid var(--border);
       flex-shrink: 0;
@@ -251,24 +88,45 @@
       transition: border-color .2s;
       font-family: inherit;
     }
-    #msg-input:focus { border-color: var(--accent); }
-    #msg-input::placeholder { color: #475569; }
+
+    #msg-input:focus {
+      border-color: var(--accent);
+    }
+
+    #msg-input::placeholder {
+      color: #475569;
+    }
 
     .send-btn {
-      width: 44px; height: 44px;
+      width: 44px;
+      height: 44px;
       border: none;
       border-radius: 50%;
       background: linear-gradient(135deg, #6366f1, #7c3aed);
       color: #fff;
       font-size: 1.2rem;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: transform .15s, box-shadow .2s;
       flex-shrink: 0;
     }
-    .send-btn:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(99,102,241,.4); }
-    .send-btn:active { transform: scale(.95); }
-    .send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    .send-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 4px 16px rgba(99, 102, 241, .4);
+    }
+
+    .send-btn:active {
+      transform: scale(.95);
+    }
+
+    .send-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     /* Connection banner */
     .conn-banner {
@@ -279,15 +137,27 @@
       font-weight: 500;
       flex-shrink: 0;
     }
-    .conn-banner.disconnected { display: block; background: var(--danger); color: #fff; }
-    .conn-banner.reconnecting { display: block; background: #f59e0b; color: #000; }
+
+    .conn-banner.disconnected {
+      display: block;
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .conn-banner.reconnecting {
+      display: block;
+      background: #f59e0b;
+      color: #000;
+    }
 
     /* User sidebar (mobile-hidden) */
     .user-sidebar {
       display: none;
       position: fixed;
-      top: 0; right: 0;
-      width: 260px; height: 100vh;
+      top: 0;
+      right: 0;
+      width: 260px;
+      height: 100vh;
       background: var(--bg-secondary);
       border-left: 1px solid var(--border);
       z-index: 100;
@@ -295,51 +165,101 @@
       overflow-y: auto;
       animation: slideIn .25s ease-out;
     }
-    .user-sidebar.open { display: block; }
+
+    .user-sidebar.open {
+      display: block;
+    }
+
     .sidebar-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.5);
+      background: rgba(0, 0, 0, .5);
       z-index: 99;
     }
-    .sidebar-overlay.open { display: block; }
 
-    .sidebar-title { font-weight: 700; font-size: .95rem; margin-bottom: 1rem; }
+    .sidebar-overlay.open {
+      display: block;
+    }
+
+    .sidebar-title {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: 1rem;
+    }
+
     .sidebar-user {
-      display: flex; align-items: center; gap: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
       padding: .5rem 0;
       font-size: .88rem;
     }
+
     .sidebar-user-dot {
-      width: 10px; height: 10px; border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
     }
 
     /* ── Animations ───────────────────────────────── */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: .4; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .4;
+      }
     }
+
     @keyframes bounce {
-      to { transform: translateY(-5px); }
+      to {
+        transform: translateY(-5px);
+      }
     }
+
     @keyframes slideIn {
-      from { transform: translateX(260px); }
-      to   { transform: translateX(0); }
+      from {
+        transform: translateX(260px);
+      }
+
+      to {
+        transform: translateX(0);
+      }
     }
 
     /* ── Responsive ───────────────────────────────── */
     @media (max-width: 640px) {
-      .gate-card { padding: 2rem 1.5rem; }
-      .msg-bubble { max-width: 88%; }
-      .chat-header { padding: .65rem .85rem; }
+      .gate-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .msg-bubble {
+        max-width: 88%;
+      }
+
+      .chat-header {
+        padding: .65rem .85rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- ════════════════════════════════════════════════ -->
@@ -350,21 +270,9 @@
       <div style="font-size:2.5rem;margin-bottom:.5rem;">🔐</div>
       <h1>The Everlasting Vault</h1>
       <p>Enter the access code to unlock the chat.</p>
-      <input
-        type="password"
-        id="gate-code"
-        class="gate-input"
-        placeholder="Access code"
-        autocomplete="off"
-      />
-      <input
-        type="text"
-        id="gate-username"
-        class="gate-input"
-        placeholder="Your display name"
-        autocomplete="off"
-        style="display:none;"
-      />
+      <input type="password" id="gate-code" class="gate-input" placeholder="Access code" autocomplete="off" />
+      <input type="text" id="gate-username" class="gate-input" placeholder="Your display name" autocomplete="off"
+        style="display:none;" />
       <button id="gate-btn" class="gate-btn">Unlock</button>
       <div id="gate-error" class="gate-error"></div>
     </div>
@@ -391,7 +299,9 @@
           <span class="online-dot"></span>
           <span id="online-count">0 online</span>
         </div>
-        <button id="users-btn" style="background:none;border:none;color:var(--text-muted);font-size:1.3rem;cursor:pointer;" title="Online users">☰</button>
+        <button id="users-btn"
+          style="background:none;border:none;color:var(--text-muted);font-size:1.3rem;cursor:pointer;"
+          title="Online users">☰</button>
       </div>
     </div>
 
@@ -402,18 +312,16 @@
     <div class="typing-indicator" id="typing-indicator"></div>
 
     <!-- Input Bar -->
-    <div class="chat-input-bar">
-      <input
-        type="text"
-        id="msg-input"
-        placeholder="Type a message..."
-        autocomplete="off"
-        maxlength="2000"
-      />
-      <button class="send-btn" id="send-btn" title="Send" disabled>
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9z"/></svg>
+    <form class="chat-input-bar" id="msg-form">
+      <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off" maxlength="2000" />
+      <button class="send-btn" id="send-btn" title="Send" type="submit">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+          stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M22 2 11 13" />
+          <path d="M22 2 15 22 11 13 2 9z" />
+        </svg>
       </button>
-    </div>
+    </form>
   </div>
 
   <!-- User Sidebar -->
@@ -427,271 +335,266 @@
   <!--  SCRIPT                                         -->
   <!-- ════════════════════════════════════════════════ -->
   <script>
-  (() => {
-    'use strict';
+    (() => {
+      'use strict';
 
-    // ── DOM refs ──────────────────────────────────
-    const gateScreen    = document.getElementById('gate-screen');
-    const chatScreen    = document.getElementById('chat-screen');
-    const gateCode      = document.getElementById('gate-code');
-    const gateUsername   = document.getElementById('gate-username');
-    const gateBtn       = document.getElementById('gate-btn');
-    const gateError     = document.getElementById('gate-error');
-    const messagesEl    = document.getElementById('messages');
-    const msgInput      = document.getElementById('msg-input');
-    const sendBtn       = document.getElementById('send-btn');
-    const typingEl      = document.getElementById('typing-indicator');
-    const connBanner    = document.getElementById('conn-banner');
-    const onlineCount   = document.getElementById('online-count');
-    const usersBtn      = document.getElementById('users-btn');
-    const userSidebar   = document.getElementById('user-sidebar');
-    const sidebarOverlay= document.getElementById('sidebar-overlay');
-    const userListEl    = document.getElementById('user-list');
+      // ── DOM refs ──────────────────────────────────
+      const gateScreen = document.getElementById('gate-screen');
+      const chatScreen = document.getElementById('chat-screen');
+      const gateCode = document.getElementById('gate-code');
+      const gateUsername = document.getElementById('gate-username');
+      const gateBtn = document.getElementById('gate-btn');
+      const gateError = document.getElementById('gate-error');
+      const messagesEl = document.getElementById('messages');
+      const msgInput = document.getElementById('msg-input');
+      const sendBtn = document.getElementById('send-btn');
+      const typingEl = document.getElementById('typing-indicator');
+      const connBanner = document.getElementById('conn-banner');
+      const onlineCount = document.getElementById('online-count');
+      const usersBtn = document.getElementById('users-btn');
+      const userSidebar = document.getElementById('user-sidebar');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+      const userListEl = document.getElementById('user-list');
 
-    let socket   = null;
-    let myColor  = '#6366f1';
-    let myName   = '';
+      let socket = null;
+      let myColor = '#6366f1';
+      let myName = '';
 
-    // ── Gatekeeper Logic ──────────────────────────
-    const STORAGE_KEY_AUTH = 'vault_auth';
-    const STORAGE_KEY_NAME = 'vault_name';
+      // ── Gatekeeper Logic ──────────────────────────
+      const STORAGE_KEY_AUTH = 'vault_auth';
+      const STORAGE_KEY_NAME = 'vault_name';
 
-    // Check sessionStorage for previous auth
-    if (sessionStorage.getItem(STORAGE_KEY_AUTH) === 'true' && sessionStorage.getItem(STORAGE_KEY_NAME)) {
-      myName = sessionStorage.getItem(STORAGE_KEY_NAME);
-      unlockChat();
-    }
-
-    // Step 1: validate code → show username field
-    // Step 2: choose name → enter chat
-    let codeValidated = false;
-
-    gateBtn.addEventListener('click', handleGate);
-    gateCode.addEventListener('keydown', e => { if (e.key === 'Enter') handleGate(); });
-    gateUsername.addEventListener('keydown', e => { if (e.key === 'Enter') handleGate(); });
-
-    async function handleGate() {
-      gateError.textContent = '';
-
-      if (!codeValidated) {
-        // Validate code
-        const code = gateCode.value.trim();
-        if (!code) { gateError.textContent = 'Please enter the access code.'; return; }
-
-        gateBtn.disabled = true;
-        gateBtn.textContent = 'Verifying...';
-        try {
-          const res = await fetch('/api/validate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code }),
-          });
-          const data = await res.json();
-          if (data.success) {
-            codeValidated = true;
-            gateCode.style.display = 'none';
-            gateUsername.style.display = 'block';
-            gateUsername.focus();
-            gateBtn.textContent = 'Enter the Vault';
-            document.querySelector('.gate-card p').textContent = 'Choose your display name.';
-          } else {
-            gateError.textContent = '🔒 Invalid access code.';
-          }
-        } catch {
-          gateError.textContent = 'Connection error. Try again.';
-        }
-        gateBtn.disabled = false;
-      } else {
-        // Set username
-        const name = gateUsername.value.trim();
-        if (!name) { gateError.textContent = 'Please enter a display name.'; return; }
-        if (name.length > 24) { gateError.textContent = 'Name is too long (max 24 chars).'; return; }
-        myName = name;
-        sessionStorage.setItem(STORAGE_KEY_AUTH, 'true');
-        sessionStorage.setItem(STORAGE_KEY_NAME, myName);
+      // Check sessionStorage for previous auth
+      if (sessionStorage.getItem(STORAGE_KEY_AUTH) === 'true' && sessionStorage.getItem(STORAGE_KEY_NAME)) {
+        myName = sessionStorage.getItem(STORAGE_KEY_NAME);
         unlockChat();
       }
-    }
 
-    // ── Unlock Chat ───────────────────────────────
-    function unlockChat() {
-      gateScreen.style.display = 'none';
-      chatScreen.style.display = 'flex';
-      initSocket();
-    }
+      // Step 1: validate code → show username field
+      // Step 2: choose name → enter chat
+      let codeValidated = false;
 
-    // ── Socket.io ─────────────────────────────────
-    function initSocket() {
-      socket = io({
-        reconnection: true,
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        timeout: 20000,
-      });
+      gateBtn.addEventListener('click', handleGate);
+      gateCode.addEventListener('keydown', e => { if (e.key === 'Enter') handleGate(); });
+      gateUsername.addEventListener('keydown', e => { if (e.key === 'Enter') handleGate(); });
 
-      socket.on('connect', () => {
-        connBanner.className = 'conn-banner';
-        connBanner.textContent = '';
-        socket.emit('user:join', myName);
-      });
+      async function handleGate() {
+        gateError.textContent = '';
 
-      socket.on('user:color', (color) => {
-        myColor = color;
-      });
+        if (!codeValidated) {
+          // Validate code
+          const code = gateCode.value.trim();
+          if (!code) { gateError.textContent = 'Please enter the access code.'; return; }
 
-      socket.on('chat:history', (history) => {
-        messagesEl.innerHTML = '';
-        history.forEach(m => renderMessage(m));
-        scrollToBottom(true);
-      });
-
-      socket.on('chat:message', (msg) => {
-        renderMessage(msg);
-        scrollToBottom();
-      });
-
-      socket.on('chat:system', (text) => {
-        const div = document.createElement('div');
-        div.className = 'msg-system';
-        div.textContent = text;
-        messagesEl.appendChild(div);
-        scrollToBottom();
-      });
-
-      socket.on('user:list', (users) => {
-        onlineCount.textContent = `${users.length} online`;
-        renderUserList(users);
-      });
-
-      socket.on('user:typing', ({ username, isTyping }) => {
-        if (isTyping) {
-          typingEl.innerHTML = `${esc(username)} is typing<span class="typing-dots"><span></span><span></span><span></span></span>`;
+          gateBtn.disabled = true;
+          gateBtn.textContent = 'Verifying...';
+          try {
+            const res = await fetch('/api/validate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code }),
+            });
+            const data = await res.json();
+            if (data.success) {
+              codeValidated = true;
+              gateCode.style.display = 'none';
+              gateUsername.style.display = 'block';
+              gateUsername.focus();
+              gateBtn.textContent = 'Enter the Vault';
+              document.querySelector('.gate-card p').textContent = 'Choose your display name.';
+            } else {
+              gateError.textContent = '🔒 Invalid access code.';
+            }
+          } catch {
+            gateError.textContent = 'Connection error. Try again.';
+          }
+          gateBtn.disabled = false;
         } else {
-          typingEl.innerHTML = '';
+          // Set username
+          const name = gateUsername.value.trim();
+          if (!name) { gateError.textContent = 'Please enter a display name.'; return; }
+          if (name.length > 24) { gateError.textContent = 'Name is too long (max 24 chars).'; return; }
+          myName = name;
+          sessionStorage.setItem(STORAGE_KEY_AUTH, 'true');
+          sessionStorage.setItem(STORAGE_KEY_NAME, myName);
+          unlockChat();
         }
-      });
+      }
 
-      // ── Reconnection events ─────────────────────
-      socket.on('disconnect', () => {
-        connBanner.className = 'conn-banner disconnected';
-        connBanner.textContent = '⚡ Disconnected — attempting to reconnect...';
-      });
-      socket.on('reconnect_attempt', () => {
-        connBanner.className = 'conn-banner reconnecting';
-        connBanner.textContent = '🔄 Reconnecting...';
-      });
-      socket.on('reconnect', () => {
-        connBanner.className = 'conn-banner';
-        connBanner.textContent = '';
-      });
-    }
+      // ── Unlock Chat ───────────────────────────────
+      function unlockChat() {
+        gateScreen.style.display = 'none';
+        chatScreen.style.display = 'flex';
+        initSocket();
+      }
 
-    // ── Send Message ──────────────────────────────
-    sendBtn.addEventListener('click', sendMessage);
-    msgInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      // ── Socket.io ─────────────────────────────────
+      function initSocket() {
+        socket = io({
+          reconnection: true,
+          reconnectionAttempts: Infinity,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
+          timeout: 20000,
+        });
+
+        socket.on('connect', () => {
+          connBanner.className = 'conn-banner';
+          connBanner.textContent = '';
+          socket.emit('user:join', myName);
+        });
+
+        socket.on('user:color', (color) => {
+          myColor = color;
+        });
+
+        socket.on('chat:history', (history) => {
+          messagesEl.innerHTML = '';
+          history.forEach(m => renderMessage(m));
+          scrollToBottom(true);
+        });
+
+        socket.on('chat:message', (msg) => {
+          renderMessage(msg);
+          scrollToBottom();
+        });
+
+        socket.on('chat:system', (text) => {
+          const div = document.createElement('div');
+          div.className = 'msg-system';
+          div.textContent = text;
+          messagesEl.appendChild(div);
+          scrollToBottom();
+        });
+
+        socket.on('user:list', (users) => {
+          onlineCount.textContent = `${users.length} online`;
+          renderUserList(users);
+        });
+
+        socket.on('user:typing', ({ username, isTyping }) => {
+          if (isTyping) {
+            typingEl.innerHTML = `${esc(username)} is typing<span class="typing-dots"><span></span><span></span><span></span></span>`;
+          } else {
+            typingEl.innerHTML = '';
+          }
+        });
+
+        // ── Reconnection events ─────────────────────
+        socket.on('disconnect', () => {
+          connBanner.className = 'conn-banner disconnected';
+          connBanner.textContent = '⚡ Disconnected — attempting to reconnect...';
+        });
+        socket.on('reconnect_attempt', () => {
+          connBanner.className = 'conn-banner reconnecting';
+          connBanner.textContent = '🔄 Reconnecting...';
+        });
+        socket.on('reconnect', () => {
+          connBanner.className = 'conn-banner';
+          connBanner.textContent = '';
+        });
+      }
+
+      // ── Send Message ──────────────────────────────
+      document.getElementById('msg-form').addEventListener('submit', (e) => {
         e.preventDefault();
         sendMessage();
-      }
-    });
+      });
 
-    // Enable/disable send button
-    msgInput.addEventListener('input', () => {
-      sendBtn.disabled = msgInput.value.trim().length === 0;
-    });
+      // Always keep button enabled for mobile compatibility
+      sendBtn.disabled = false;
 
-    // Typing indicator
-    let typingTimeout = null;
-    msgInput.addEventListener('input', () => {
-      if (!socket) return;
-      socket.emit('user:typing', true);
-      clearTimeout(typingTimeout);
-      typingTimeout = setTimeout(() => {
+      // Typing indicator
+      let typingTimeout = null;
+      msgInput.addEventListener('input', () => {
+        if (!socket) return;
+        socket.emit('user:typing', true);
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+          socket.emit('user:typing', false);
+        }, 1500);
+      });
+
+      function sendMessage() {
+        const text = msgInput.value.trim();
+        if (!text || !socket) return;
+        socket.emit('chat:message', text);
         socket.emit('user:typing', false);
-      }, 1500);
-    });
+        msgInput.value = '';
+        msgInput.focus();
+      }
 
-    function sendMessage() {
-      const text = msgInput.value.trim();
-      if (!text || !socket) return;
-      socket.emit('chat:message', text);
-      socket.emit('user:typing', false);
-      msgInput.value = '';
-      sendBtn.disabled = true;
-      msgInput.focus();
-    }
+      // ── Render Message ────────────────────────────
+      function renderMessage(msg) {
+        const isSelf = msg.username === myName;
+        const group = document.createElement('div');
+        group.className = `msg-group ${isSelf ? 'msg-self' : 'msg-other'}`;
 
-    // ── Render Message ────────────────────────────
-    function renderMessage(msg) {
-      const isSelf = msg.username === myName;
-      const group  = document.createElement('div');
-      group.className = `msg-group ${isSelf ? 'msg-self' : 'msg-other'}`;
+        // Sender name (skip for self)
+        const sender = document.createElement('div');
+        sender.className = 'msg-sender';
+        sender.style.color = msg.color || '#94a3b8';
+        sender.textContent = isSelf ? 'You' : msg.username;
+        group.appendChild(sender);
 
-      // Sender name (skip for self)
-      const sender = document.createElement('div');
-      sender.className = 'msg-sender';
-      sender.style.color = msg.color || '#94a3b8';
-      sender.textContent = isSelf ? 'You' : msg.username;
-      group.appendChild(sender);
+        // Bubble
+        const bubble = document.createElement('div');
+        bubble.className = 'msg-bubble';
+        bubble.textContent = msg.text;
+        group.appendChild(bubble);
 
-      // Bubble
-      const bubble = document.createElement('div');
-      bubble.className = 'msg-bubble';
-      bubble.textContent = msg.text;
-      group.appendChild(bubble);
+        // Timestamp
+        const time = document.createElement('div');
+        time.className = 'msg-time';
+        time.textContent = formatTime(msg.timestamp);
+        group.appendChild(time);
 
-      // Timestamp
-      const time = document.createElement('div');
-      time.className = 'msg-time';
-      time.textContent = formatTime(msg.timestamp);
-      group.appendChild(time);
+        messagesEl.appendChild(group);
+      }
 
-      messagesEl.appendChild(group);
-    }
-
-    // ── Render User List ──────────────────────────
-    function renderUserList(users) {
-      userListEl.innerHTML = '';
-      users.forEach(u => {
-        const div = document.createElement('div');
-        div.className = 'sidebar-user';
-        div.innerHTML = `<span class="sidebar-user-dot" style="background:${esc(u.color)}"></span> ${esc(u.username)}`;
-        userListEl.appendChild(div);
-      });
-    }
-
-    // Sidebar toggle
-    usersBtn.addEventListener('click', () => {
-      userSidebar.classList.toggle('open');
-      sidebarOverlay.classList.toggle('open');
-    });
-    sidebarOverlay.addEventListener('click', () => {
-      userSidebar.classList.remove('open');
-      sidebarOverlay.classList.remove('open');
-    });
-
-    // ── Helpers ───────────────────────────────────
-    function scrollToBottom(instant) {
-      requestAnimationFrame(() => {
-        messagesEl.scrollTo({
-          top: messagesEl.scrollHeight,
-          behavior: instant ? 'auto' : 'smooth',
+      // ── Render User List ──────────────────────────
+      function renderUserList(users) {
+        userListEl.innerHTML = '';
+        users.forEach(u => {
+          const div = document.createElement('div');
+          div.className = 'sidebar-user';
+          div.innerHTML = `<span class="sidebar-user-dot" style="background:${esc(u.color)}"></span> ${esc(u.username)}`;
+          userListEl.appendChild(div);
         });
+      }
+
+      // Sidebar toggle
+      usersBtn.addEventListener('click', () => {
+        userSidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('open');
       });
-    }
+      sidebarOverlay.addEventListener('click', () => {
+        userSidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('open');
+      });
 
-    function formatTime(ts) {
-      const d = new Date(ts);
-      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
+      // ── Helpers ───────────────────────────────────
+      function scrollToBottom(instant) {
+        requestAnimationFrame(() => {
+          messagesEl.scrollTo({
+            top: messagesEl.scrollHeight,
+            behavior: instant ? 'auto' : 'smooth',
+          });
+        });
+      }
 
-    function esc(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-  })();
+      function formatTime(ts) {
+        const d = new Date(ts);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      function esc(str) {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+      }
+    })();
   </script>
 </body>
+
 </html>
