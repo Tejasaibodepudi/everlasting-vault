@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: everlasting-vault
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: ACCESS_CODE
+        sync: false
+      - key: MONGO_URI
+        sync: false
